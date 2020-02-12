@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mars Rover</title>
+</head>
+
+<body>
+    <script>
+        let rover = {
+            direction: "N",
+            x: 0,
+            y: 0,
+            travelLog: [ {
+                x: 0,
+                y: 0
+            } ]
+        }
+
+        //funcao para imprimir o travel log
+        function printTravelLog() {
+            for ( let i = 0; i < rover.travelLog.length; i++ ) {
+                console.log( `Travel Log: ${i} ==> (${rover.travelLog[i].x}, ${rover.travelLog[i].y})` )
+            }
+        }
+
+        //funcao para fazer o push no travel log
+        function pushNewPositionTravelLog() {
+            let newPosition = {
+                x: rover.x,
+                y: rover.y
+            }
+            rover.travelLog.push( newPosition );
+        }
+
+        //funcao para virar o rover para a esquerda ou direita, passar o parametro 'l' ou 'r'
+        function turnRover( rover, directionToTurn ) {
+            console.log( `Before invoking the turnRover function rover was facing: ${rover.direction}` )
+            switch ( rover.direction ) {
+                case "N":
+                    directionToTurn == `l` ? rover.direction = "W" : rover.direction = "E"
+                    break;
+                case "S":
+                    directionToTurn == 'l' ? rover.direction = "E" : rover.direction = "W"
+                    break;
+                case "E":
+                    directionToTurn == 'l' ? rover.direction = "N" : rover.direction = "S"
+                    break;
+                case "W":
+                    directionToTurn == 'l' ? rover.direction = "S" : rover.direction = "N"
+                    break;
+            }
+            console.log( `After invoking the turnRover function rover is facing: ${rover.direction}` )
+            console.log( "******************************************************" )
+        }
+
+        //testar funcao de virar o Rover
+        //turnRover( rover 'r)
+        //turnRover( rover 'r')
+        //turnRover( rover 'l')
+        //turnRover( rover, 'l')
+
+        //funcao para mover o rover para frente
+        function moveForward( rover ) {
+            console.log( `Before calling the move Function Rover has position: (${rover.x}, ${rover.y})` );
+
+            if ( rover.x >= 0 && rover.x <= 9 && rover.y >= 0 && rover.y <= 9 ) {
+                switch ( rover.direction ) {
+                    case "N": //verifica primeiro limite do board para o N e depois executa o movimento
+                        rover.y === 0 ? console.log( "You can't place player outside of the board!" ) : rover.y--
+                        break;
+                    case "S": //verifica primeiro limite do board para o S e depois executa o movimento
+                        rover.y === 9 ? console.log( "You can't place player outside of the board!" ) : rover.y++
+                        break;
+                    case "E": //verifica primeiro limite do board para o E e depois executa o movimento
+                        rover.x === 9 ? console.log( "You can't place player outside of the board!" ) : rover.x++
+                        break;
+                    case "W": //verifica primeiro limite do board para o W e depois executa o movimento
+                        rover.x === 0 ? console.log( "You can't place player outside of the board!" ) : rover.x--
+                        break;
+                }
+                pushNewPositionTravelLog()
+            } else {
+                console.log( "You can't place player outside of the board!" );
+            }
+            console.log( `After invoking the move function Rover has position: (${rover.x}, ${rover.y})` );
+            console.log( "******************************************************" )
+        }
+
+        //funcao para mover o rover para trás
+        function moveBackward( rover ) {
+            console.log( `Before calling the move Function Rover has position: (${rover.x}, ${rover.y})` );
+
+            if ( rover.x >= 0 && rover.x <= 9 && rover.y >= 0 && rover.y <= 9 ) {
+                switch ( rover.direction ) {
+                    case "N": //verifica primeiro limite do board para o N e depois executa o movimento
+                        rover.y === 9 ? console.log( "You can't place player outside of the board!" ) : rover.y++
+                        break;
+                    case "S": //verifica primeiro limite do board para o N e depois executa o movimento
+                        rover.y === 0 ? console.log( "You can't place player outside of the board!" ) : rover.y--
+                        break;
+                    case "E": //verifica primeiro limite do board para o N e depois executa o movimento
+                        rover.x === 0 ? console.log( "You can't place player outside of the board!" ) : rover.x--
+                        break;
+                    case "W": //verifica primeiro limite do board para o N e depois executa o movimento
+                        rover.x === 9 ? console.log( "You can't place player outside of the board!" ) : rover.x++
+                        break;
+                }
+                pushNewPositionTravelLog()
+            } else {
+                console.log( "You can't place player outside of the board!" );
+            }
+            console.log( `After invoking the move function Rover has position: (${rover.x}, ${rover.y})` );
+            console.log( "******************************************************" )
+        }
+
+        //funcao que chama as demais funcoes para locomover o Rover
+        function moveRover( command ) {
+
+            // verificar que sempre passou um argumento e só aceita strings 
+            if ( !command || typeof command !== "string" ) {
+                console.log( "Please provide valid directions for the Rover" );
+                return;
+            }
+
+            for ( i = 0; i < command.length; i++ ) {
+                switch ( command[ i ] ) {
+                    case "f":
+                        moveForward( rover )
+                        break;
+                    case "r":
+                        turnRover( rover, 'r' )
+                        break;
+                    case "l":
+                        turnRover( rover, 'l' )
+                        break;
+                    case 'b':
+                        moveBackward( rover )
+                        break;
+                    default:
+                        console.log( "Please provide a valid letter" )
+                }
+            }
+        }
+
+        //para testes
+        moveRover( "rffrfflfrff" )
+
+        //imprimir travel log
+        printTravelLog()
+    </script>
+</body>
+
+</html>
